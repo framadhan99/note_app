@@ -1,17 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/models/note.dart';
 import 'package:note_app/models/note_data.dart';
+import 'package:note_app/pages/editing_page_note.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/note_tile.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // create a new note
+  void createNewNote() {
+    // create a new id
+    int id = Provider.of<NoteData>(context, listen: false).getAllData().length;
+
+    // create a blank note
+    Note newNote = Note(id: id, text: '');
+
+    // go to edit the note
+    goToNotePage(newNote, true);
+  }
+
+  // go to note editing page
+  void goToNotePage(Note note, bool isNewNote) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditingNotePage(
+          note: note,
+          isNewNote: false,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<NoteData>(
       builder: (context, value, child) => Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.grey[100],
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.amber[300],
+          onPressed: createNewNote,
+          child: Icon(Icons.add),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -35,7 +72,7 @@ class HomePage extends StatelessWidget {
                       children: List.generate(
                         value.getAllData().length,
                         (index) => NoteTile(
-                          text: 'My Favourite person',
+                          text: value.getAllData()[index].text,
                         ),
                       ),
                     ),

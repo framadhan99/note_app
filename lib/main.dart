@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: NoteData(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: HomePage(),
       ),
     );
