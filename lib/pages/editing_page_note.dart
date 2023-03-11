@@ -49,6 +49,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.yellow[100],
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -62,7 +63,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
               }
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.black87,
             ),
@@ -71,7 +72,7 @@ class _EditingNotePageState extends State<EditingNotePage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               height: MediaQuery.of(context).size.height * 0.85,
               width: MediaQuery.of(context).size.width,
               child: TextField(
@@ -79,9 +80,16 @@ class _EditingNotePageState extends State<EditingNotePage> {
                 expands: true,
                 maxLines: null,
                 minLines: null,
-                style: TextStyle(fontSize: 17),
-                decoration: InputDecoration(
+                style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500),
+                decoration: const InputDecoration(
                     hintText: 'writing your note ...',
+                    hintStyle: TextStyle(
+                        fontSize: 17,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500),
                     border: InputBorder.none),
               ),
             ),

@@ -14,6 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<NoteData>(context, listen: false).initializeNote();
+  }
+
   // create a new note
   void createNewNote() {
     // create a new id
@@ -48,11 +54,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<NoteData>(
       builder: (context, value, child) => Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.yellow[100],
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.amber[300],
+          backgroundColor: Colors.amber[400],
           onPressed: createNewNote,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -65,24 +71,35 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(left: 15, top: 30),
                     child: Text(
                       'Note',
-                      style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey),
                     ),
                   ),
                   const SizedBox(height: 15),
                   // list of notes
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.8,
-                    child: ListView(
-                      children: List.generate(
-                        value.getAllData().length,
-                        (index) => NoteTile(
-                          text: value.getAllData()[index].text,
-                          onTap: () =>
-                              goToNotePage(value.getAllData()[index], false),
-                        ),
-                      ),
-                    ),
+                    child: value.getAllData().isEmpty
+                        ? const Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Text(
+                              'Nothing here ...',
+                              style: TextStyle(color: Colors.grey),
+                            ))
+                        : ListView(
+                            children: List.generate(
+                              value.getAllData().length,
+                              (index) => NoteTile(
+                                text: value.getAllData()[index].text,
+                                onTap: () => goToNotePage(
+                                    value.getAllData()[index], false),
+                                delete: () =>
+                                    value.deleteNote(value.getAllData()[index]),
+                              ),
+                            ),
+                          ),
                   ),
                 ],
               ),
