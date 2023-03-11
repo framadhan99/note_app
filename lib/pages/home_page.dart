@@ -33,17 +33,22 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(
         builder: (context) => EditingNotePage(
           note: note,
-          isNewNote: false,
+          isNewNote: isNewNote,
         ),
       ),
     );
+  }
+
+  // delete note
+  void deleteNote(Note note) {
+    Provider.of<NoteData>(context).deleteNote(note);
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<NoteData>(
       builder: (context, value, child) => Scaffold(
-        backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.grey[200],
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.amber[300],
           onPressed: createNewNote,
@@ -64,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                           TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   // list of notes
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.8,
@@ -73,6 +78,8 @@ class _HomePageState extends State<HomePage> {
                         value.getAllData().length,
                         (index) => NoteTile(
                           text: value.getAllData()[index].text,
+                          onTap: () =>
+                              goToNotePage(value.getAllData()[index], false),
                         ),
                       ),
                     ),
